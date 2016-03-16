@@ -1,4 +1,11 @@
 #!/bin/bash
+LOCKFILE=${HOME}/$(basename $0).lock
+
+exec {FD}>$LOCKFILE
+if (! flock -e -n ${FD}) ; then
+  echo "lockfile ${LOCKFILE} exist";
+  exit 1
+fi
 
 if [ $(whoami) != '<%= @repo_owner %>' ]; then
     echo "You really should be <%= @repo_owner %> while running $0"
@@ -6,3 +13,6 @@ if [ $(whoami) != '<%= @repo_owner %>' ]; then
 fi
 
 <%= @createrepo_update %>
+
+exec {FD}>&-
+rm $LOCKFILE
