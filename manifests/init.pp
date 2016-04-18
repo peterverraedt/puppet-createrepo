@@ -89,7 +89,7 @@ define createrepo (
   $timeout              = 300,
   $manage_repo_dirs     = true,
   $workers              = undef,
-  $use_lockfile         = true,
+  $use_lockfile         = false,
   $lockfile             ="/tmp/createrepo-update-${name}.lock"
 ) {
   validate_absolute_path($repository_dir)
