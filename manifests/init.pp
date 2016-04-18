@@ -53,6 +53,17 @@
 #   Manage the repository directory. If false the repository and cache
 #   directories must be created manually/externally.
 #
+# [*workers*]
+#   number of workers to spawn to read rpms
+#
+# [*use_lockfile*]
+#   Prevents corruption of the repodata, when multiple createrepo processes
+#   start building repodata at the same time. (eg in combination with incrond)
+#
+# [*lockfile*]
+#   full path/name of the lockfile
+#
+
 # === Variables
 #
 # None.
