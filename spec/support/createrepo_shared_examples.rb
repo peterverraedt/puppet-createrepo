@@ -30,7 +30,7 @@ shared_examples "when using default parameters" do
     end
 
     # The createrepo command is :osfamily specific
-    it "creates repository" do 
+    it "creates repository" do
         should contain_exec("createrepo-#{title}").with({
             'user'    => 'root',
             'group'   => 'root',
@@ -58,7 +58,7 @@ shared_examples "when using default parameters" do
                 'mode'   => '0755',
             })
         end
-        
+
         # The createrepo update command is :osfamily specific
         it "with correct user check" do
             should contain_file("/usr/local/bin/createrepo-update-#{title}") \
@@ -195,6 +195,18 @@ shared_examples "when repository_dir and repository_cache_dir are provided" do
     end
 end
 
+shared_examples "when use_lockfile" do
+    context "is true" do
+        let :params do
+            { :use_lockfile => true }
+        end
+        it "contents update exec" do
+            should contain_file("/usr/local/bin/createrepo-update-#{title}") \
+                .with_content(/.*flock -e -n.*/)
+        end
+    end
+end
+
 shared_examples "when enable_cron" do |command_line|
     # FIXME figure out a clean way of getting rid of the command_line parameter
     context "is false" do
@@ -291,10 +303,19 @@ shared_examples "when directory should not be managed" do
     end
 end
 
+shared_examples "when workers is provided" do
+	  let :params do
+			  {
+						:workers => 2
+				}
+	  end
+		it_behaves_like "createrepo command changes", /^\/usr\/bin\/createrepo .* --workers 2 .*$/
+end
+
 shared_examples "createrepo command changes" do |command_matcher|
     # This shared example takes a regex and matches against all
     # createrepo commands
-    it "affects repository creation" do 
+    it "affects repository creation" do
         should contain_exec("createrepo-#{title}").with({
             'command' => command_matcher,
         })
@@ -466,6 +487,27 @@ shared_examples "when supplying invalid parameters" do
 
         it 'should fail' do
             should raise_error(Puppet::Error, /is not a boolean/)
+        end
+    end
+    context "for use_lockfile" do
+        let :params do
+            {
+                :use_lockfile => "false",
+            }
+        end
+        it 'should fail' do
+            should raise_error(Puppet::Error, /is not a boolean/)
+        end
+    end
+    context "for lockfile" do
+        let :params do
+            {
+                :lockfile => "non/absolute/path",
+            }
+        end
+
+        it 'should fail' do
+            should raise_error(Puppet::Error, /is not an absolute path/)
         end
     end
 end
