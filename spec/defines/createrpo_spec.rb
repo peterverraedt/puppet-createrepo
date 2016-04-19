@@ -13,7 +13,7 @@ describe 'createrepo', :type => :define do
 
         # The createrepo command is :osfamily specific
         describe "it uses createrepo to" do
-            it "create repository with correct command" do 
+            it "create repository with correct command" do
                 should contain_exec("createrepo-#{title}").with({
                     'command' => "/usr/bin/createrepo --cachedir /var/cache/yumrepos/testyumrepo --changelog-limit 5 --database /var/yumrepos/testyumrepo",
                 })
@@ -44,6 +44,7 @@ describe 'createrepo', :type => :define do
         it_works_like "when groupfile is provided"
         it_works_like "when exec timeout is provided"
         it_works_like "when directory should not be managed"
+        it_works_like "when workers is provided"
 
         context "works with changelog limit modifications" do
             let :params do
@@ -70,7 +71,7 @@ describe 'createrepo', :type => :define do
         end
 
         # The createrepo command is :osfamily specific
-        it "creates repository" do 
+        it "creates repository" do
             should contain_exec("createrepo-#{title}").with({
                 'command' => "/usr/bin/createrepo --cachedir /var/cache/yumrepos/testyumrepo --database /var/yumrepos/testyumrepo",
             })
@@ -98,6 +99,7 @@ describe 'createrepo', :type => :define do
         it_works_like "when groupfile is provided"
         it_works_like "when exec timeout is provided"
         it_works_like "when directory should not be managed"
+        it_works_like "when workers is provided"
 
         context "works with changelog limit modifications" do
             let :params do

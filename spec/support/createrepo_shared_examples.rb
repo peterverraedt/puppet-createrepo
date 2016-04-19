@@ -489,25 +489,4 @@ shared_examples "when supplying invalid parameters" do
             should raise_error(Puppet::Error, /is not a boolean/)
         end
     end
-    context "for use_lockfile" do
-        let :params do
-            {
-                :use_lockfile => "false",
-            }
-        end
-        it 'should fail' do
-            should raise_error(Puppet::Error, /is not a boolean/)
-        end
-    end
-    context "for lockfile" do
-        let :params do
-            {
-                :lockfile => "non/absolute/path",
-            }
-        end
-
-        it 'should fail' do
-            should raise_error(Puppet::Error, /is not an absolute path/)
-        end
-    end
 end
