@@ -124,7 +124,8 @@ define createrepo (
     $cleanup              = false,
     $cleanup_keep         = 2,
     $use_lockfile         = false,
-    $lockfile             = "/tmp/createrepo-update-${name}.lock"
+    $lockfile             = "/tmp/createrepo-update-${name}.lock",
+    $use_filter           = false
 ) {
     if $update_file_path != undef {
         $real_update_file_path = $update_file_path
