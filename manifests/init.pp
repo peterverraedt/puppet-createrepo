@@ -102,6 +102,7 @@ define createrepo (
   $workers              = undef,
   $use_lockfile         = false,
   $lockfile             ="/tmp/createrepo-update-${name}.lock"
+  $use_filter           = false,
 ) {
   validate_absolute_path($repository_dir)
   validate_absolute_path($repo_cache_dir)
