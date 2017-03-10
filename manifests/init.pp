@@ -123,8 +123,8 @@ define createrepo (
     }
   }
 
-  if ! defined(Package['createrepo']) {
-    package { 'createrepo':
+  if ! defined(Package['createrepo_c']) {
+    package { 'createrepo_c':
       ensure => present,
     }
   }
