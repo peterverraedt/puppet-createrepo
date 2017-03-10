@@ -162,8 +162,8 @@ define createrepo (
         }
     }
 
-    if ! defined(Package['createrepo']) {
-        package { 'createrepo':
+    if ! defined(Package['createrepo_c']) {
+        package { 'createrepo_c':
             ensure => present,
         }
     }
@@ -224,7 +224,7 @@ define createrepo (
       $_arg_workers = ''
     }
 
-    $cmd = '/usr/bin/createrepo'
+    $cmd = '/usr/bin/createrepo_c'
     $_arg_cachedir = "--cachedir ${repo_cache_dir}"
     $arg = "${_arg_cachedir}${_arg_changelog}${_arg_checksum}${_arg_groupfile}${_arg_workers}"
     $cron_output_suppression = "${_stdout_suppress}${_stderr_suppress}"
@@ -239,7 +239,7 @@ define createrepo (
         creates => "${repository_dir}/repodata",
         timeout => $timeout,
         require => [
-            Package['createrepo'],
+            Package['createrepo_c'],
             File[$repository_dir],
             File[$repo_cache_dir],
         ],
