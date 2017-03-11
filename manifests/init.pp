@@ -251,7 +251,7 @@ define createrepo (
         owner   => $repo_owner,
         group   => $repo_group,
         mode    => '0755',
-        content => template('createrepo/createrepo-update.erb'),
+        content => template('createrepo/createrepo-update.sh.erb'),
     }
 
     validate_bool($enable_cron)
