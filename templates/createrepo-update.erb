@@ -6,10 +6,13 @@ if [ $(whoami) != '<%= @repo_owner %>' ]; then
 fi
 <% if @use_lockfile == true %>
 	flock -e -n <%= @lockfile %> <%= @createrepo_update %>
-<% elseif @use_filter == true %>
-	if  "$1"  == [[:alnum:*.rpm ]]; then
-    <%= @createrepo_update %>
-	fi
 <% else %>
+	<% if @use_filter == true %>
+		if  [[ "$1"  == [[:alnum:]]*.rpm ]]; then
+    	<%= @createrepo_update %>
+		fi
+	<% else %>
     <%= @createrepo_update %>
+	<% end -%>
 <% end -%>
+
