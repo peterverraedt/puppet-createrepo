@@ -1,10 +1,6 @@
 #!/bin/bash
 <%-
     command = @createrepo_update
-
-    if @use_lockfile
-        command = "flock -e -n #{@lockfile} #{command}"
-    end
 -%>
 
 if [ "$(whoami)" != '<%= @repo_owner %>' ]; then
@@ -16,4 +12,20 @@ fi
 echo "$1" | grep -q '\.rpm$' || exit
 
 <%- end -%>
+
+<%- if @use_lockfile -%>
+find "<%= @lockfile %>" -cmin +1500 -exec rmdir '{}' +
+mkdir "<%= @lockfile %>" || exit
+
+trap "rmdir <%= @lockfile %>; exit" INT TERM EXIT
+
+<%- end -%>
+
+while test -n "$(find "<%= @repository_dir %>" -name '*.rpm' -newermt '-10 seconds' -print -quit)"
+do
+    sleep 2
+done
 <%= command %>
+<%- if @use_lockfile -%>
+rmdir "<%= @lockfile %>"
+<%- end -%>
