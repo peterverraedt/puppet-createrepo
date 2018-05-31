@@ -261,7 +261,19 @@ shared_examples "when use_lockfile" do
         end
         it "contents update exec" do
             should contain_file("/usr/local/bin/createrepo-update-#{title}") \
-                .with_content(/.*flock -e -n.*/)
+                .with_content(/.*mkdir.*/)
+        end
+    end
+end
+
+shared_examples "when use_filter" do
+    context "is true" do
+        let :params do
+            { :use_filter => true }
+        end
+        it "contents update exec" do
+            should contain_file("/usr/local/bin/createrepo-update-#{title}") \
+                .with_content(/.*-newermt '-10 seconds'.*/)
         end
     end
 end

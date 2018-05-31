@@ -9,7 +9,7 @@ if [ "$(whoami)" != '<%= @repo_owner %>' ]; then
 fi
 
 <%- if @use_filter -%>
-echo "$1" | grep -q '\.rpm$' || exit
+[ $# -eq 0 ] || echo "$1" | grep -q '\.rpm$' || exit
 
 <%- end -%>
 
@@ -21,10 +21,13 @@ trap "rmdir <%= @lockfile %>; exit" INT TERM EXIT
 
 <%- end -%>
 
+<%- if @use_filter -%>
 while test -n "$(find "<%= @repository_dir %>" -name '*.rpm' -newermt '-10 seconds' -print -quit)"
 do
     sleep 2
 done
+<%- end -%>
+
 <%= %Q(#{@repomanage_cleanup}\n) if @cleanup -%>
 <%= command %>
 <%- if @use_lockfile -%>
