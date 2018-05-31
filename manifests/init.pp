@@ -81,6 +81,11 @@
 # [*lockfile*]
 #   full path/name of the lockfile
 #
+# [*use_filter*]
+#   For use with `incrond`. Check whether the update script was called with an 
+#   .rpm file as argument, and wait until in the last 10 seconds, no new .rpm 
+#   files were put in the repository_dir.
+#
 # === Variables
 #
 # None.
